@@ -1,3 +1,5 @@
+import {loadUsers} from './seedData';
+import './db';
 import dotenv from 'dotenv';
 import express from 'express';
 import moviesRouter from './api/movies';
@@ -28,3 +30,7 @@ app.use(errHandler);
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
+
+if (process.env.SEED_DB) {
+  loadUsers();
+}

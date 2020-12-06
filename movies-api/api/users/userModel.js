@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const MovieSchema = new Schema({
   id: Number,
-  title: String
+  title: String,
+  name: String,
 });
 
 const UserSchema = new Schema({

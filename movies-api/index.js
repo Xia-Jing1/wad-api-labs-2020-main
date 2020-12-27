@@ -1,5 +1,5 @@
 import session from 'express-session';
-import authenticate from './authenticate';
+import passport from './authenticate';
 import {loadUsers} from './seedData';
 import './db';
 import dotenv from 'dotenv';
@@ -31,13 +31,15 @@ app.use(session({
   saveUninitialized: true
 }));
 
-
+// initialise passport​
+app.use(passport.initialize());
 //configure body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
 app.use(express.static('public'));
-app.use('/api/movies', authenticate, moviesRouter);
+// Add passport.authenticate(..)  to middleware stack for protected routes​
+app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/users', usersRouter);
 

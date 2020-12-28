@@ -65,10 +65,19 @@ router.post('/:userName/favourites', async (req, res, next) => {
   const userName = req.params.userName;
   const movie = await movieModel.findByMovieDBId(newFavourite);
   const user = await User.findByUserName(userName);
-  await user.favourites.push(movie._id);
-  await user.save(); 
-  res.status(201).json(user); 
-});
+  try{
+  if(user.favourites.indexOf(movie._id) === -1) {
+      await user.favourites.push(movie._id);
+      await user.save();
+    }
+    res.status(201).json(user);}
+   
+      catch (error) {
+        return next(error);
+     // console.error(`invalid`);
+      
+    }
+  });
 
 router.get('/:userName/favourites', (req, res, next) => {
   const userName = req.params.userName;
